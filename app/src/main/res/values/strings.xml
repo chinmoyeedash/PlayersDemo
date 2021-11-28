@@ -1,0 +1,11 @@
+<resources>
+  <string name="app_name">NBA Players</string>
+  <string name="players">Players</string>
+  <string name="stats">Stats</string>
+  <string name="teams">Teams</string>
+  <string name="name">%s %s</string>
+  <string name="height_text"> Height: %s ft</string>
+  <string name="weight_text"> Weight: %s pounds</string>
+  <string name="team_name_text"> Team Name: %s </string>
+  <string name="position_text"> Position: %s </string>
+</resources>

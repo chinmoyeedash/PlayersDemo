@@ -3,7 +3,8 @@
 Key Features:
 
 ##  MVVM + Clean Architecture
-## Retrofit + coroutines
+##  Koin Dependency Injection
+##  Retrofit + coroutines
 ##  Paging 3 + FlowUsecase
 ##  ViewPager + BottomNav 
 ##  Kotlin 

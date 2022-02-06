@@ -1,38 +1,36 @@
 package com.sample.app.data.mapper
 
-import com.sample.app.domain.models.Either
-import com.sample.app.domain.models.ErrorStatus
-import com.sample.app.data.common.getApiError
-import com.sample.app.data.models.ResponseModel
-import com.sample.app.domain.models.ApiError
-import com.sample.app.domain.models.IPagingModel
-import kotlinx.coroutines.*
-import kotlinx.coroutines.Dispatchers.IO
-import retrofit2.Response
+import android.text.TextUtils
+import com.sample.app.data.models.PlayerInfo
+import com.sample.app.data.models.PlayerResponse
+import com.sample.app.data.models.Team
+import com.sample.app.domain.models.IPlayer
 
+fun PlayerResponse.toPlayerData(): List<IPlayer> {
+  val players = mutableListOf<IPlayer>()
+  data?.forEach { player ->
+    val item = PlayerInfo(
+      id = player.id,
+      firstName = player.first_name,
+      lastName = player.last_name,
+      imageUrl = getPlayerImageUrl(player.first_name, player.last_name),
+      heightFeet = player.height_feet,
+      heightInches = player.height_inches,
+      weightPounds = player.weight_pounds,
+      team = Team(
+        id = player.team?.id,
+        fullName = player.team?.full_name,
+        abbreviation = player.team?.abbreviation,
+        division = player.team?.division,
+        city = player.team?.city,
+      ),
+      position = player.position
+    )
+    players.add(item)
+  }
+  return players
+}
 
-object Mapper {
-
-  suspend fun <T> getResult(call: suspend () -> Response<T>): Either<ApiError, T> {
-
-
-      try {
-        val response = call()
-        if (response.isSuccessful) {
-          val body = response.body()
-          if (body != null)  return Either.Success(body)
-        }
-        return Either.Error(
-          ApiError(
-            message = response.message(),
-            code = response.code(),
-            errorStatus = ErrorStatus.UNKNOWN_ERROR
-          )
-        )
-      } catch (e: Exception) {
-        return Either.Error(getApiError(e))
-      }
-    }
-
-
+private fun getPlayerImageUrl(firstName: String?="", lastName: String?=""): String? {
+  return if (!TextUtils.isEmpty(firstName) && !TextUtils.isEmpty(lastName)) "https://nba-players.herokuapp.com/players/$lastName/$firstName" else null
 }

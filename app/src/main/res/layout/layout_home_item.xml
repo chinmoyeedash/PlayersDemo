@@ -1,57 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout  xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto"
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools">
+  
   <data>
+    <import type="android.view.View"/>
     <variable
       name="model"
-      type="com.sample.app.domain.models.IPagingModel" />
+      type="com.sample.app.presentation.model.PlayerInfo" />
   </data>
   
-  <androidx.constraintlayout.widget.ConstraintLayout
+  <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_margin="@dimen/margin_small"
-    android:layout_height="200dp"
-    android:id="@+id/layout">
+    android:layout_height="wrap_content"
+    android:background="@drawable/card_background"
+    android:backgroundTint="@color/cardBackground"
+    android:orientation="horizontal"
+    android:padding="@dimen/text_margin"
+    android:layout_margin="8dp"
+    >
     
-    <androidx.cardview.widget.CardView
+    <TextView
+      android:id="@+id/playerName"
+      style="@style/TextAppearance.AppCompat.Title"
+      firstName="@{model.firstName}"
+      lastName="@{model.lastName}"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="8dp"
+      android:gravity="bottom"
+      android:textAppearance="?attr/textAppearanceListItem"
+      app:layout_constraintBottom_toTopOf="@id/teamName"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      tools:text="Qi Zhou" />
+    
+    <TextView
+      android:id="@+id/teamName"
+      style="@style/TextAppearance.MaterialComponents.Subtitle2"
+      android:layout_width="0dp"
       android:layout_height="0dp"
-      android:layout_width="match_parent"
-      android:id="@+id/gradient"
-      app:cardCornerRadius="@dimen/margin_xsmall"
-      android:elevation="2dp"
+      android:layout_marginStart="8dp"
+      android:gravity="center_vertical"
+      android:text="@{model.teamName}"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent">
-      
-      <ImageView
-        android:id="@+id/images"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="fitCenter"
-        android:foreground="@drawable/gradient"
-        android:src="@drawable/gradient"
-        app:imageUrl="@{model.url}"/>
-     
-    </androidx.cardview.widget.CardView>
-    <TextView
-      android:id="@+id/textView"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:textSize="@dimen/text_small"
-      android:layout_marginStart="@dimen/margin_small"
-      android:layout_marginEnd="@dimen/margin_small"
-      android:layout_marginBottom="@dimen/margin_xsmall"
-      android:maxLines="2"
-      android:ellipsize="end"
-      android:text="@{model.name}"
-      style="@style/TextAppearance.AppCompat.Inverse"
-      android:elevation="@dimen/margin_xsmall"
-      tools:text="Meme name"
-      app:layout_constraintBottom_toBottomOf="@id/gradient"
-      app:layout_constraintEnd_toEndOf="@+id/gradient"
-      app:layout_constraintStart_toStartOf="@+id/gradient" />
+      app:layout_constraintTop_toBottomOf="@id/playerName"
+      android:visibility="@{model.showName ? View.GONE : View.VISIBLE}"
+      tools:text="Qi Zhou" />
+  
+    <ImageView
+      android:id="@+id/playerImage"
+      errorRes="@{@drawable/ic_baseline_person_24}"
+      imageUrl="@{model.imageUrl}"
+      placeHolderRes="@{@drawable/ic_baseline_person_24}"
+      android:layout_width="70dp"
+      android:layout_height="70dp"
+      android:textAppearance="?attr/textAppearanceListItem"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      android:visibility="@{model.showName ? View.GONE : View.VISIBLE}"
+      tools:src="@drawable/ic_launcher_background" />
   </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
+  <data>
+    <variable
+      name="viewModel"
+      type="com.sample.app.presentation.MainViewModel" />
+  </data>
   
   <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -9,14 +14,36 @@
     android:fitsSystemWindows="true"
     tools:context=".presentation.MainActivity">
   
-    <androidx.fragment.app.FragmentContainerView
+    <!--<androidx.fragment.app.FragmentContainerView
       android:id="@+id/nav_host_fragment"
       android:name="androidx.navigation.fragment.NavHostFragment"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       app:defaultNavHost="true"
       app:navGraph="@navigation/presentation_nav"
-       />
+       />-->
+  
+    <androidx.viewpager2.widget.ViewPager2
+      android:id="@+id/viewPager"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+      android:id="@+id/bottomNavView"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:animateLayoutChanges="true"
+      android:background="@color/bottomNav"
+      app:layout_behavior=".presentation.utils.BottomAnimBehavior"
+      app:labelVisibilityMode="labeled"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      android:layout_gravity="bottom"
+      app:menu="@menu/bottom_nav_menu"
+      
+      />
+
 
   </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

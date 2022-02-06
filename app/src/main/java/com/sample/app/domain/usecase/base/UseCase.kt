@@ -1,28 +1,27 @@
 package com.sample.app.domain.usecase.base
 
-import com.sample.app.domain.exception.getApiError
-import kotlinx.coroutines.*
-import java.util.concurrent.CancellationException
+import com.sample.app.domain.models.ApiError
+import com.sample.app.domain.models.Either
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 
-abstract class UseCase<Type, in Params>() where Type : Any {
+abstract class UseCase<in Params, Type>() where Type : Any {
 
-    abstract suspend fun run(params: Params? = null): Type
+  abstract suspend fun run(params: Params): Either<ApiError, Type>
 
-
-    fun invoke(scope: CoroutineScope, params: Params?, onResult: UseCaseResponse<Type>?) {
-
-        scope.launch {
-            try {
-                val result = run(params)
-                onResult?.onSuccess(result)
-            } catch (e: CancellationException) {
-                e.printStackTrace()
-                onResult?.onError(getApiError(e))
-            } catch (e: Exception) {
-                e.printStackTrace()
-                onResult?.onError(getApiError(e))
-            }
-        }
+  operator fun invoke(
+    scope: CoroutineScope,
+    params: Params,
+    onSuccess: (Type) -> Unit = {},
+    onFailure: (ApiError) -> Unit = {}
+  ) {
+    val job = scope.async { run(params) }
+    scope.launch {
+      job.await().either(onFailure, onSuccess)
     }
+  }
+
 
 }
+

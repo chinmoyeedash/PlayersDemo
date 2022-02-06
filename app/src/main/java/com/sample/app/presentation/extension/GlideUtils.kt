@@ -34,6 +34,7 @@ class GlideUtils {
               .apply(requestOptions)
               .error(errorRes)
               .into(view)
+
           } else {
             glide
               .load(imageUrl)

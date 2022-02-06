@@ -5,8 +5,8 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import com.sample.app.BuildConfig
 import com.sample.app.data.api.ApiService
-import com.sample.app.data.repository.PlayerRepository
-import com.sample.app.domain.repository.IPlayersRepository
+import com.sample.app.data.repository.SampleRepository
+import com.sample.app.domain.repository.ISampleRepository
 import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.dsl.module
@@ -21,7 +21,7 @@ private const val TIME_OUT = 30L
 val dataKoinModule = module {
 
   single { createService(get()) }
-  single { createPlayerRepository(get()) }
+  single { createSampleRepository(get()) }
   single { createRetrofit(get(), BuildConfig.BASE_URL) }
   single { createOkHttpClient(androidContext()) }
 }
@@ -37,13 +37,13 @@ fun createOkHttpClient(context: Context): OkHttpClient {
     .connectTimeout(TIME_OUT, TimeUnit.SECONDS)
     .readTimeout(TIME_OUT, TimeUnit.SECONDS)
     .addInterceptor(httpLoggingInterceptor)
-    .addInterceptor(offlineInterceptor(context))
+    .addInterceptor(OfflineInterceptor(context))
     .addNetworkInterceptor(onlineInterceptor)
     .cache(cache)
     .build()
 }
 
-class offlineInterceptor(
+class OfflineInterceptor(
   private val context: Context
 ) : Interceptor {
   override fun intercept(chain: Interceptor.Chain): Response {
@@ -71,8 +71,8 @@ fun createService(retrofit: Retrofit): ApiService {
   return retrofit.create(ApiService::class.java)
 }
 
-fun createPlayerRepository(apiService: ApiService): IPlayersRepository {
-  return PlayerRepository(apiService)
+fun createSampleRepository(apiService: ApiService): ISampleRepository {
+  return SampleRepository(apiService)
 }
 
 var onlineInterceptor: Interceptor = object : Interceptor {

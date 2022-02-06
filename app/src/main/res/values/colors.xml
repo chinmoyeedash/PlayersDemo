@@ -9,6 +9,6 @@
   <color name="white">#FFFFFFFF</color>
   <color name="cardBackground">#d4f2ef</color>
   <color name="green_primary">#038c84</color>
-  <color name="bottomNav">#eddfc9</color>
+  <color name="background">#eddfc9</color>
   <color name="toolbar">#038c84</color>
 </resources>
